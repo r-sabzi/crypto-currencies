@@ -1,1 +1,1 @@
-// alert('its from index')
+alert('its from index')
