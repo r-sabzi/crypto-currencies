@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import { handleResponse } from './../../helpers'
 import { API_URL } from './../../config'
 import './Table.css'
+import Loading from './../common/Loading'
+
+
+
+
+
 export default class List extends Component {
 
     state = {
@@ -38,9 +44,15 @@ export default class List extends Component {
     }
 
     render() {
-        if (this.state.loading) {
-            return <div>Loading...</div>
+        const {loading,currencies,error}=this.state
+
+        if (loading) {
+            return <Loading/>
         }
+        if (error) {
+            return <span className="error">{error}</span>
+}
+
         return (
             <div className='Table-container'>
        
@@ -55,7 +67,7 @@ export default class List extends Component {
                     </thead>
                     <tbody className="Table-body">
                     {
-                    this.state.currencies.map(currency =>
+                    currencies.map(currency =>
                         <tr key={currency.id}>
                             <td><span className="Table-rank">{currency.rank}</span>{currency.name}</td>
                             <td><span className="Table-dollar">${currency.price}</span></td>
