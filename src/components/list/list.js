@@ -16,63 +16,63 @@ export default class List extends Component {
         currencies: [],
         error: null,
         totalPages: 0,
-        page:1
+        page: 1
     }
     componentDidMount() {
         this.fetchCurrencies()
     }
     fetchCurrencies = () => {
         this.setState({ loading: true })
-        
-        const {page}=this.state
+
+        const { page } = this.state
 
         fetch(`${API_URL}/cryptocurrencies?page=${page}&perPage=20`)
             .then(handleResponse)
             .then((data) => {
-            const {currencies,totalPages}=data
-            this.setState({
-                currencies,
-                loading: false,
-                totalPages
+                const { currencies, totalPages } = data
+                this.setState({
+                    currencies,
+                    loading: false,
+                    totalPages
+                })
             })
-        })
             .catch((error) => {
-              
-            this.setState({
-                error: error.errorMessage||error.toString(),
-                loading: false
-            })
-        });
+
+                this.setState({
+                    error: error.errorMessage || error.toString(),
+                    loading: false
+                })
+            });
     }
-    
-   
+
+
     handlePaginationClick = (direction) => {
         let nextPage = this.state.page
-        nextPage = direction ==='next' ? nextPage+1:nextPage-1
+        nextPage = direction === 'next' ? nextPage + 1 : nextPage - 1
         this.setState({ page: nextPage }, () => { this.fetchCurrencies() })
-        
+
     }
     render() {
-        const {loading,currencies,error,totalPages,page}=this.state
+        const { loading, currencies, error, totalPages, page } = this.state
 
         if (loading) {
-            return <Loading/>
+            return <Loading />
         }
         if (error) {
             return <span className="error">{error}</span>
-}
+        }
         return (
 
             <div>
                 <Table
                     currencies={currencies}
                 />
-                <Pagination 
+                <Pagination
                     totalPages={totalPages}
                     page={page}
                     handlePaginationClick={this.handlePaginationClick}
                 />
 
-</div>        )
+            </div>)
     }
 }

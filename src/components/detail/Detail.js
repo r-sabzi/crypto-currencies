@@ -12,6 +12,21 @@ export default class Detail extends Component {
     }
     componentDidMount() {
         const currencyId = this.props.match.params.id
+       
+        this.fetchCurrency(currencyId)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.location.pathname !== nextProps.location.pathname) {
+            
+            const newCurrencyId = nextProps.match.params.id
+      
+            this.fetchCurrency(newCurrencyId)
+             
+        }    
+    }
+
+    fetchCurrency = (currencyId) => {
         this.setState({
             laoding:true
         })
@@ -30,10 +45,9 @@ export default class Detail extends Component {
                     error:error.errorMessage
             })
         })
-
     }
 
-    
+
     render() {
 
         const { loading ,error,currency} = this.state
